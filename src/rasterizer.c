@@ -1,6 +1,6 @@
 #include "rasterizer.h"
 
-bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, int screen_w, int screen_h) {
+bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, uint32_t screen_w, uint32_t screen_h) {
     if (!gfx3d_framebuffer_create(&rasterizer->framebuffer, screen_w, screen_h)) {
         return false;
     }
@@ -34,8 +34,8 @@ void gfx3d_rasterizer_clear(Gfx3dRasterizer *rasterizer, Gfx3dColor clear_color)
 
     gfx3d_framebuffer_clear(&rasterizer->framebuffer, r, g, b);
 
-    unsigned int size = rasterizer->screen_w*rasterizer->screen_h;
-    for (unsigned int i = 0; i < size; i++) {
+    uint32_t size = rasterizer->screen_w*rasterizer->screen_h;
+    for (uint32_t i = 0; i < size; i++) {
         rasterizer->zbuffer[i] = INFINITY;
     }
 }
@@ -60,16 +60,28 @@ void gfx3d_rasterizer_draw_triangle(Gfx3dRasterizer *rasterizer, Gfx3dTriangle t
     v1.z = 1.0f / v1.z;
     v2.z = 1.0f / v2.z;
 
-    int xmin = (int)fminf(v0.x, fminf(v1.x, v2.x));
-    int xmax = (int)fmaxf(v0.x, fmaxf(v1.x, v2.x));
-    int ymin = (int)fminf(v0.y, fminf(v1.y, v2.y));
-    int ymax = (int)fmaxf(v0.y, fmaxf(v1.y, v2.y));
+    uint32_t screen_w = rasterizer->screen_w;
+    uint32_t screen_h = rasterizer->screen_h;
+
+    float xmin = fminf(v0.x, fminf(v1.x, v2.x));
+    float xmax = fmaxf(v0.x, fmaxf(v1.x, v2.x));
+    float ymin = fminf(v0.y, fminf(v1.y, v2.y));
+    float ymax = fmaxf(v0.y, fmaxf(v1.y, v2.y));
+
+    if (xmin > screen_w - 1 || xmax < 0 || ymin > screen_h - 1 || ymax < 0) {
+        return;
+    }
+
+    uint32_t x0 = gfx3d_util_max(0, (int32_t)floorf(xmin));
+    uint32_t x1 = gfx3d_util_min(screen_w - 1, (int32_t)floorf(xmax));
+    uint32_t y0 = gfx3d_util_max(0, (int32_t)floorf(ymin));
+    uint32_t y1 = gfx3d_util_min(screen_h - 1, (int32_t)floorf(ymax));
 
     float area = edge_function(v0, v1, v2);
     float inv_area = 1.0f / area;
 
-    for (int y = ymin; y <= ymax; y++) {
-        for (int x = xmin; x <= xmax; x++) {
+    for (uint32_t y = y0; y <= y1; y++) {
+        for (uint32_t x = x0; x <= x1; x++) {
             Gfx3dVec3 p = gfx3d_vec3(x, y, 0.0f);
             float w0 = edge_function(v1, v2, p);
             float w1 = edge_function(v2, v0, p);

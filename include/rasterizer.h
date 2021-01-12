@@ -7,13 +7,13 @@
 #include "color.h"
 
 typedef struct Gfx3dRasterizer {
-    int screen_w;
-    int screen_h;
+    uint32_t screen_w;
+    uint32_t screen_h;
     Gfx3dFramebuffer framebuffer;
     float *zbuffer;
 } Gfx3dRasterizer;
 
-bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, int screen_w, int screen_h);
+bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, uint32_t screen_w, uint32_t screen_h);
 void gfx3d_rasterizer_destroy(Gfx3dRasterizer *rasterizer);
 void gfx3d_rasterizer_clear(Gfx3dRasterizer *rasterizer, Gfx3dColor clear_color);
 void gfx3d_rasterizer_draw_triangle(Gfx3dRasterizer *rasterizer, Gfx3dTriangle triangle);

@@ -16,10 +16,12 @@
 
 #define ARRAY_LEN(arr) (int)((sizeof(arr)) / (sizeof(arr[0])))
 
-static inline void swap_int(int *a, int *b) {
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
+static inline int32_t gfx3d_util_max(int32_t a, int32_t b) {
+    return a > b ? a : b;
+}
+
+static inline int32_t gfx3d_util_min(int32_t a, int32_t b) {
+    return a < b ? a : b;
 }
 
 #endif // GFX3D_UTIL_H
