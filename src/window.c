@@ -12,7 +12,7 @@ bool gfx3d_window_create(Gfx3dWindow *win, int internal_width, int internal_heig
         return false;
     }
 
-    uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+    uint32_t flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
     if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     sdl_win = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            internal_width*win_scale, internal_height*win_scale, flags);

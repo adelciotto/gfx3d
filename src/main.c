@@ -4,14 +4,17 @@
 int main(int argc, char *argv[]) {
     int exit_code = EXIT_SUCCESS;
 
+    const uint32_t width = 640;
+    const uint32_t height = 480;
+
     Gfx3dWindow win;
-    if (!gfx3d_window_create(&win, 640, 480, 2, false, true)) {
+    if (!gfx3d_window_create(&win, width, height, 2, false, true)) {
         exit_code = EXIT_FAILURE;
         goto exit;
     }
 
     Gfx3dPipeline pipeline;
-    if (!gfx3d_pipeline_create(&pipeline, 640, 480)) {
+    if (!gfx3d_pipeline_create(&pipeline, width, height)) {
         exit_code = EXIT_FAILURE;
         goto exit;
     }
@@ -20,7 +23,7 @@ int main(int argc, char *argv[]) {
     gfx3d_geometry_cube(&cube_geo);
 
     Gfx3dMat4 proj;
-    gfx3d_mat4_perspective(proj, gfx3d_deg2rad(90.0f), 640.0f / 480.0f, 0.1f, 100.0f);
+    gfx3d_mat4_perspective(proj, gfx3d_deg2rad(90.0f), (float)width / (float)height, 0.1f, 100.0f);
 
     Gfx3dVec3 camera_pos = gfx3d_vec3(0.0f, 0.0f, 3.0f);
     Gfx3dVec3 camera_front = gfx3d_vec3(0.0f, 0.0f, -1.0f);
