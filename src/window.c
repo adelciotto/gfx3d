@@ -2,7 +2,7 @@
 
 #define WINDOW_TITLE "gfx3d"
 
-bool gfx3d_window_create(Gfx3dWindow *win, int internal_width, int internal_height, int win_scale, bool fullscreen, bool vsync) {
+bool gfx3d_window_create(gfx3d_window_t *win, int internal_width, int internal_height, int win_scale, bool fullscreen, bool vsync) {
     SDL_Window *sdl_win = NULL;
     SDL_Renderer *sdl_rend = NULL;
     SDL_Texture *sdl_tex = NULL;
@@ -60,7 +60,7 @@ error:
     return false;
 }
 
-void gfx3d_window_destroy(Gfx3dWindow *win) {
+void gfx3d_window_destroy(gfx3d_window_t *win) {
     if (win->sdl_tex != NULL) SDL_DestroyTexture(win->sdl_tex);
     if (win->sdl_rend != NULL) SDL_DestroyRenderer(win->sdl_rend);
     if (win->sdl_win != NULL) SDL_DestroyWindow(win->sdl_win);
@@ -68,7 +68,7 @@ void gfx3d_window_destroy(Gfx3dWindow *win) {
     SDL_Quit();
 }
 
-void gfx3d_window_poll_events(Gfx3dWindow *win) {
+void gfx3d_window_poll_events(gfx3d_window_t *win) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -77,7 +77,7 @@ void gfx3d_window_poll_events(Gfx3dWindow *win) {
     }
 }
 
-void gfx3d_window_present(Gfx3dWindow *win, uint8_t *pixels, int pitch) {
+void gfx3d_window_present(gfx3d_window_t *win, uint8_t *pixels, int pitch) {
     SDL_UpdateTexture(win->sdl_tex, NULL, pixels, pitch);
 
     SDL_RenderClear(win->sdl_rend);

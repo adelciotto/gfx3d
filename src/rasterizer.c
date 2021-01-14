@@ -1,6 +1,6 @@
 #include "rasterizer.h"
 
-bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, uint32_t screen_w, uint32_t screen_h) {
+bool gfx3d_rasterizer_create(gfx3d_rasterizer_t *rasterizer, uint32_t screen_w, uint32_t screen_h) {
     if (!gfx3d_framebuffer_create(&rasterizer->framebuffer, screen_w, screen_h)) {
         return false;
     }
@@ -19,7 +19,7 @@ bool gfx3d_rasterizer_create(Gfx3dRasterizer *rasterizer, uint32_t screen_w, uin
     return true;
 }
 
-void gfx3d_rasterizer_destroy(Gfx3dRasterizer *rasterizer) {
+void gfx3d_rasterizer_destroy(gfx3d_rasterizer_t *rasterizer) {
     if (rasterizer->zbuffer != NULL) {
         free(rasterizer->zbuffer);
         rasterizer->zbuffer = NULL;
@@ -28,7 +28,7 @@ void gfx3d_rasterizer_destroy(Gfx3dRasterizer *rasterizer) {
     gfx3d_framebuffer_destroy(&rasterizer->framebuffer);
 }
 
-void gfx3d_rasterizer_clear(Gfx3dRasterizer *rasterizer, Gfx3dColor clear_color) {
+void gfx3d_rasterizer_clear(gfx3d_rasterizer_t *rasterizer, gfx3d_color_t clear_color) {
     uint8_t r, g, b;
     gfx3d_color_to_rgb_u8(clear_color, &r, &g, &b);
 
@@ -40,17 +40,17 @@ void gfx3d_rasterizer_clear(Gfx3dRasterizer *rasterizer, Gfx3dColor clear_color)
     }
 }
 
-static float edge_function(Gfx3dVec3 va, Gfx3dVec3 vb, Gfx3dVec3 vc) {
+static float edge_function(gfx3d_vec3_t va, gfx3d_vec3_t vb, gfx3d_vec3_t vc) {
     return (vc.x - va.x) * (vb.y - va.y) - (vc.y - va.y) * (vb.x - va.x);
 }
 
-void gfx3d_rasterizer_draw_triangle(Gfx3dRasterizer *rasterizer, Gfx3dTriangle triangle) {
-    Gfx3dVec3 v0 = triangle.vertices[0].position;
-    Gfx3dVec3 v1 = triangle.vertices[1].position;
-    Gfx3dVec3 v2 = triangle.vertices[2].position;
-    Gfx3dColor c0 = triangle.vertices[0].color;
-    Gfx3dColor c1 = triangle.vertices[1].color;
-    Gfx3dColor c2 = triangle.vertices[2].color;
+void gfx3d_rasterizer_draw_triangle(gfx3d_rasterizer_t *rasterizer, gfx3d_triangle_t triangle) {
+    gfx3d_vec3_t v0 = triangle.vertices[0].position;
+    gfx3d_vec3_t v1 = triangle.vertices[1].position;
+    gfx3d_vec3_t v2 = triangle.vertices[2].position;
+    gfx3d_color_t c0 = triangle.vertices[0].color;
+    gfx3d_color_t c1 = triangle.vertices[1].color;
+    gfx3d_color_t c2 = triangle.vertices[2].color;
 
     c0.r /= v0.z; c0.g /= v0.z; c0.b /= v0.z;
     c1.r /= v1.z; c1.g /= v1.z; c1.b /= v1.z;
@@ -82,7 +82,7 @@ void gfx3d_rasterizer_draw_triangle(Gfx3dRasterizer *rasterizer, Gfx3dTriangle t
 
     for (uint32_t y = y0; y <= y1; y++) {
         for (uint32_t x = x0; x <= x1; x++) {
-            Gfx3dVec3 p = gfx3d_vec3(x, y, 0.0f);
+            gfx3d_vec3_t p = gfx3d_vec3(x, y, 0.0f);
             float w0 = edge_function(v1, v2, p);
             float w1 = edge_function(v2, v0, p);
             float w2 = edge_function(v0, v1, p);
@@ -93,7 +93,7 @@ void gfx3d_rasterizer_draw_triangle(Gfx3dRasterizer *rasterizer, Gfx3dTriangle t
                 w2 *= inv_area;
 
                 float z = 1.0f / (w0 * v0.z + w1 * v1.z + w2 * v2.z);
-                Gfx3dColor col = gfx3d_color(
+                gfx3d_color_t col = gfx3d_color(
                     (w0 * c0.r + w1 * c1.r + w2 * c2.r) * z,
                     (w0 * c0.g + w1 * c1.g + w2 * c2.g) * z,
                     (w0 * c0.b + w1 * c1.b + w2 * c2.b) * z

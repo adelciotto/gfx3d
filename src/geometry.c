@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-static const Gfx3dVertex s_cube_vertices[] = {
+static const gfx3d_vertex_t s_cube_vertices[] = {
     {.position = {-1.0f, -1.0f, 1.0f}, .color = GFX3D_COLOR_WHITE(), .normal = GFX3D_VEC3_ZERO()},
     {.position = {1.0f, -1.0f, 1.0f}, .color = GFX3D_COLOR_RED(), .normal = GFX3D_VEC3_ZERO()},
     {.position = {-1.0f, 1.0f, 1.0f}, .color = GFX3D_COLOR_LIME(), .normal = GFX3D_VEC3_ZERO()},
@@ -26,15 +26,15 @@ static const unsigned int s_cube_indices[] = {
     2, 3, 7, 2, 7, 6
 };
 
-Gfx3dVertex gfx3d_vertex(Gfx3dVec3 position, Gfx3dColor color, Gfx3dVec3 normal) {
-    return (Gfx3dVertex){
+gfx3d_vertex_t gfx3d_vertex(gfx3d_vec3_t position, gfx3d_color_t color, gfx3d_vec3_t normal) {
+    return (gfx3d_vertex_t){
         .position = position,
         .color = color,
         .normal = normal
     };
 }
 
-void gfx3d_geometry_cube(Gfx3dGeometry *geo) {
+void gfx3d_geometry_cube(gfx3d_geometry_t *geo) {
     geo->num_vertices = ARRAY_LEN(s_cube_vertices);
     geo->vertices = s_cube_vertices;
 
