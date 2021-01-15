@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
         gfx3d_pipeline_draw(&pipeline, &cube_geo, mvp);
 
-        gfx3d_window_present(&win, pipeline.rasterizer.framebuffer.pixels, pipeline.rasterizer.framebuffer.pitch);
+        gfx3d_window_present(&win, pipeline.framebuffer.pixels, pipeline.framebuffer.pitch);
     }
 
 exit:

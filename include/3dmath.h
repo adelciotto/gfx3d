@@ -23,6 +23,7 @@ typedef struct gfx3d_vec4_t {
 #define GFX3D_VEC4_ZERO() {.x = 0.0f, .y = 0.0f, .z = 0.0f, .w = 1.0f}
 
 gfx3d_vec4_t gfx3d_vec4(float x, float y, float z);
+gfx3d_vec4_t gfx3d_vec4_zero();
 gfx3d_vec4_t gfx3d_vec4_from_vec3(gfx3d_vec3_t v);
 
 #define GFX3D_VEC3_ZERO() {.x = 0.0f, .y = 0.0f, .z = 0.0f}
