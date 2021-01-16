@@ -6,7 +6,10 @@ typedef struct triangle_t {
     gfx3d_vec4_t clip_space_positions[3];
     gfx3d_vec3_t screen_space_positions[3];
 
+    bool has_normals;
     gfx3d_vec3_t normals[3];
+
+    bool has_colors;
     gfx3d_color_t colors[3];
 } triangle_t;
 
@@ -63,13 +66,19 @@ static triangle_t triangle_from_indices(gfx3d_geometry_t *geometry, uint32_t a, 
     triangle.screen_space_positions[1] = gfx3d_vec3_zero();
     triangle.screen_space_positions[2] = gfx3d_vec3_zero();
 
-    triangle.normals[0] = geometry->vertices.normals[a];
-    triangle.normals[1] = geometry->vertices.normals[b];
-    triangle.normals[2] = geometry->vertices.normals[c];
+    triangle.has_normals = geometry->vertices.normals != NULL;
+    if (triangle.has_normals) {
+        triangle.normals[0] = geometry->vertices.normals[a];
+        triangle.normals[1] = geometry->vertices.normals[b];
+        triangle.normals[2] = geometry->vertices.normals[c];
+    }
 
-    triangle.colors[0] = geometry->vertices.colors[a];
-    triangle.colors[1] = geometry->vertices.colors[b];
-    triangle.colors[2] = geometry->vertices.colors[c];
+    triangle.has_colors = geometry->vertices.colors != NULL;
+    if (triangle.has_colors) {
+        triangle.colors[0] = geometry->vertices.colors[a];
+        triangle.colors[1] = geometry->vertices.colors[b];
+        triangle.colors[2] = geometry->vertices.colors[c];
+    }
 
     return triangle;
 }
@@ -96,7 +105,7 @@ static gfx3d_vec3_t project_point(gfx3d_vec4_t clip, int viewport_w, int viewpor
     return gfx3d_vec3(
         (clip.x*(float)viewport_w) / (2.0f*clip.w) + win_center_x,
         (clip.y*(float)viewport_h) / (2.0f*clip.w) + win_center_y,
-        clip.z
+        clip.z / clip.w
     );
 }
 
@@ -111,8 +120,15 @@ static void project_triangle(triangle_t *triangle, uint32_t viewport_w, uint32_t
 }
 
 static bool is_triangle_backfacing(triangle_t *triangle) {
-    // TODO: Implement backface culling.
-    return false;
+    gfx3d_vec3_t v0 = triangle->screen_space_positions[0];
+    gfx3d_vec3_t v1 = triangle->screen_space_positions[1];
+    gfx3d_vec3_t v2 = triangle->screen_space_positions[2];
+
+    gfx3d_vec3_t a = gfx3d_vec3_sub(v1, v0);
+    gfx3d_vec3_t b = gfx3d_vec3_sub(v2, v0);
+    gfx3d_vec3_t N = gfx3d_vec3_cross(a, b);
+
+    return N.z < 0;
 }
 
 static float edge_function(gfx3d_vec3_t va, gfx3d_vec3_t vb, gfx3d_vec3_t vc) {
@@ -189,13 +205,9 @@ static void draw_triangle(gfx3d_pipeline_t *pipeline, triangle_t *triangle) {
 }
 
 void gfx3d_pipeline_draw(gfx3d_pipeline_t *pipeline, gfx3d_geometry_t *geometry, gfx3d_mat4_t mvp) {
-    for (int i = 0; i < geometry->num_indices; i+=3) {
-        uint32_t index_a = geometry->indices[i];
-        uint32_t index_b = geometry->indices[i+1];
-        uint32_t index_c = geometry->indices[i+2];
-
+    for (int i = 0; i < geometry->num_vertices; i+=3) {
         // Assemble triangle vertices from indices.
-        triangle_t triangle = triangle_from_indices(geometry, index_a, index_b, index_c);
+        triangle_t triangle = triangle_from_indices(geometry, i, i+1, i+2);
 
         // Transform the triangle to clip space.
         transform_triangle(&triangle, mvp);

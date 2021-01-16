@@ -4,8 +4,8 @@
 int main(int argc, char *argv[]) {
     int exit_code = EXIT_SUCCESS;
 
-    const uint32_t width = 640;
-    const uint32_t height = 480;
+    const uint32_t width = 1280;
+    const uint32_t height = 720;
 
     gfx3d_window_t win;
     if (!gfx3d_window_create(&win, width, height, 2, false, true)) {

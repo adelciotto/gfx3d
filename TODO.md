@@ -3,8 +3,9 @@
 - [ ] Debug text rendering.
 - [ ] Add more types of common geometry.
 - [ ] Wire frame draw mode.
-- [ ] Backface culling.
+- [ ] Draw debug lines.
 - [ ] Proper triangle clipping.
+- [ ] Better vertex buffer abstraction. Can pack all data into single array and define layout.
 - [ ] Camera module.
 - [ ] Ambient and Diffuse lighting.
 - [ ] Specular lighting.

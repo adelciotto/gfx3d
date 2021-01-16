@@ -20,7 +20,7 @@ typedef struct gfx3d_color_t {
 #define GFX3D_COLOR_GREEN() {.r = 0.0f, .g = 0.5f, .b = 0.0f, .a = 1.0f}
 #define GFX3D_COLOR_AQUA() {.r = 0.0f, .g = 1.0f, .b = 1.0f, .a = 1.0f}
 #define GFX3D_COLOR_FUCHSIA() {.r = 1.0f, .g = 0.0f, .b = 1.0f, .a = 1.0f}
-#define GFX3D_COLOR_PURPLE() {.r = 0.0f, .g = 0.0f, .b = 0.0f, .a = 1.0f}
+#define GFX3D_COLOR_PURPLE() {.r = 0.5f, .g = 0.0f, .b = 0.5f, .a = 1.0f}
 
 
 gfx3d_color_t gfx3d_color(float r, float g, float b);

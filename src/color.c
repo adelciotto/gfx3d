@@ -2,7 +2,7 @@
 #include "3dmath.h"
 
 gfx3d_color_t gfx3d_color(float r, float g, float b) {
-    return (gfx3d_color_t){ .r = r, .g = g, .b = b };
+    return (gfx3d_color_t){ .r = r, .g = g, .b = b, .a = 1.0f };
 }
 
 void gfx3d_color_to_rgb_u8(gfx3d_color_t c, uint8_t *r, uint8_t *g, uint8_t *b) {

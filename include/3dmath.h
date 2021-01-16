@@ -33,6 +33,7 @@ gfx3d_vec3_t gfx3d_vec3_zero();
 gfx3d_vec3_t gfx3d_vec3_sub(gfx3d_vec3_t va, gfx3d_vec3_t vb);
 gfx3d_vec3_t gfx3d_vec3_add(gfx3d_vec3_t va, gfx3d_vec3_t vb);
 gfx3d_vec3_t gfx3d_vec3_scale(gfx3d_vec3_t v, float s);
+gfx3d_vec3_t gfx3d_vec3_negate(gfx3d_vec3_t v);
 float gfx3d_vec3_length(gfx3d_vec3_t v);
 void gfx3d_vec3_normalize(gfx3d_vec3_t *v);
 float gfx3d_vec3_dot(gfx3d_vec3_t va, gfx3d_vec3_t vb);

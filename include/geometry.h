@@ -13,8 +13,6 @@ typedef struct gfx3d_vertex_list_t {
 typedef struct gfx3d_geometry_t {
     gfx3d_vertex_list_t vertices;
     int num_vertices;
-    uint32_t *indices;
-    int num_indices;
 } gfx3d_geometry_t;
 
 void gfx3d_geometry_cube(gfx3d_geometry_t *geo);

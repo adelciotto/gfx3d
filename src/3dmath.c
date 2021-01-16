@@ -34,6 +34,10 @@ gfx3d_vec3_t gfx3d_vec3_scale(gfx3d_vec3_t v, float s) {
     return gfx3d_vec3(v.x * s, v.y * s, v.z * s);
 }
 
+gfx3d_vec3_t gfx3d_vec3_negate(gfx3d_vec3_t v) {
+    return gfx3d_vec3(-v.x, -v.y, -v.z);
+}
+
 float gfx3d_vec3_length(gfx3d_vec3_t v) {
     return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 }
