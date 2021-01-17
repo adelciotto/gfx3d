@@ -77,11 +77,14 @@ void gfx3d_window_poll_events(gfx3d_window_t *win) {
     }
 }
 
-void gfx3d_window_present(gfx3d_window_t *win, uint8_t *pixels, int pitch) {
+void gfx3d_window_upload_pixels(gfx3d_window_t *win, uint8_t *pixels, int pitch) {
     SDL_UpdateTexture(win->sdl_tex, NULL, pixels, pitch);
 
     SDL_RenderClear(win->sdl_rend);
     SDL_RenderCopy(win->sdl_rend, win->sdl_tex, NULL, NULL);
+}
+
+void gfx3d_window_swap(gfx3d_window_t *win) {
     SDL_RenderPresent(win->sdl_rend);
 }
 
@@ -89,3 +92,10 @@ float gfx3d_elapsed_time() {
     return (float)SDL_GetTicks() / 1000.0f;
 }
 
+uint64_t gfx3d_performance_get_counter() {
+    return SDL_GetPerformanceCounter();
+}
+
+double gfx3d_performance_elapsed_time(uint64_t end, uint64_t start) {
+    return (double)((end - start)*1000) / (double)SDL_GetPerformanceFrequency();
+}

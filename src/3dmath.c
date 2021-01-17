@@ -2,6 +2,14 @@
 
 #define TO_RADIANS M_PI / 180.0f
 
+gfx3d_vec2_t gfx3d_vec2(float x, float y) {
+    return (gfx3d_vec2_t){.x = x, .y = y};
+}
+
+gfx3d_vec2_t gfx3d_vec2_zero() {
+    return gfx3d_vec2(0.0f, 0.0f);
+}
+
 gfx3d_vec4_t gfx3d_vec4(float x, float y, float z) {
     return (gfx3d_vec4_t){.x = x, .y = y, .z = z, .w = 1.0f};
 }

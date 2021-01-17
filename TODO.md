@@ -1,6 +1,5 @@
 # TODO
 
-- [ ] Debug text rendering.
 - [ ] Add more types of common geometry.
 - [ ] Wire frame draw mode.
 - [ ] Draw debug lines.

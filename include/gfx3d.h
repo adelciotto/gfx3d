@@ -3,6 +3,7 @@
 
 #include "util.h"
 #include "window.h"
+#include "text.h"
 #include "pipeline.h"
 
 #endif // GFX3D_H

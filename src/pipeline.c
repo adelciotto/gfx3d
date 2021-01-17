@@ -212,6 +212,8 @@ void gfx3d_pipeline_draw(gfx3d_pipeline_t *pipeline, gfx3d_geometry_t *geometry,
         // Transform the triangle to clip space.
         transform_triangle(&triangle, mvp);
 
+        // TODO: Calculate per-vertex lighting.
+
         // Clip the triangle to the view volume.
         if (clip_triangle(&triangle)) {
             continue;

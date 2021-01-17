@@ -20,8 +20,11 @@ typedef struct gfx3d_window_t {
 bool gfx3d_window_create(gfx3d_window_t *win, int internal_width, int internal_height, int win_scale, bool fullscreen, bool vsync);
 void gfx3d_window_destroy(gfx3d_window_t *win);
 void gfx3d_window_poll_events(gfx3d_window_t *win);
-void gfx3d_window_present(gfx3d_window_t *win, uint8_t *pixels, int pitch);
+void gfx3d_window_upload_pixels(gfx3d_window_t *win, uint8_t *pixels, int pitch);
+void gfx3d_window_swap(gfx3d_window_t *win);
 
 float gfx3d_elapsed_time();
+uint64_t gfx3d_performance_get_counter();
+double gfx3d_performance_elapsed_time(uint64_t end, uint64_t start);
 
 #endif // GFX3D_WINDOW_H

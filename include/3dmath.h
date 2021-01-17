@@ -7,6 +7,14 @@
 #define GFX3D_PI M_PI
 #define GFX3D_TWOPI M_PI*2.0f
 
+typedef struct gfx3d_vec2_t {
+    float x;
+    float y;
+} gfx3d_vec2_t;
+
+gfx3d_vec2_t gfx3d_vec2(float x, float y);
+gfx3d_vec2_t gfx3d_vec2_zero();
+
 typedef struct gfx3d_vec3_t {
     float x;
     float y;

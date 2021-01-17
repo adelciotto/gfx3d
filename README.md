@@ -2,6 +2,8 @@
 
 A software implementation of a fixed function 3d graphics pipeline built for learning purposes. It is currently a work-in-progress.
 
+![latest](screenshots/17-01-2021.png)
+
 ## Compile and Run
 
 I use linux, so the Makefile has only tested been tested on my PC.
