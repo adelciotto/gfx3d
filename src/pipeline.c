@@ -28,6 +28,7 @@ bool gfx3d_pipeline_create(gfx3d_pipeline_t *pipeline, uint32_t viewport_w, uint
     pipeline->viewport_w = viewport_w;
     pipeline->viewport_h = viewport_h;
     pipeline->zbuffer = zbuffer;
+    pipeline->draw_wireframe = false;
 
     return true;
 }
@@ -172,9 +173,11 @@ static void draw_triangle(gfx3d_pipeline_t *pipeline, triangle_t *triangle) {
     float area = edge_function(v0, v1, v2);
     float inv_area = 1.0f / area;
 
+    bool draw_wireframe = pipeline->draw_wireframe;
+
     for (uint32_t y = y0; y <= y1; y++) {
         for (uint32_t x = x0; x <= x1; x++) {
-            gfx3d_vec3_t p = gfx3d_vec3(x, y, 0.0f);
+            gfx3d_vec3_t p = gfx3d_vec3(x+0.5f, y+0.5f, 0.0f);
             float w0 = edge_function(v1, v2, p);
             float w1 = edge_function(v2, v0, p);
             float w2 = edge_function(v0, v1, p);
@@ -185,18 +188,24 @@ static void draw_triangle(gfx3d_pipeline_t *pipeline, triangle_t *triangle) {
                 w2 *= inv_area;
 
                 float z = 1.0f / (w0 * v0.z + w1 * v1.z + w2 * v2.z);
-                gfx3d_color_t col = gfx3d_color(
-                    (w0 * c0.r + w1 * c1.r + w2 * c2.r) * z,
-                    (w0 * c0.g + w1 * c1.g + w2 * c2.g) * z,
-                    (w0 * c0.b + w1 * c1.b + w2 * c2.b) * z
-                );
+
+                gfx3d_color_t pixel_col;
+                if (draw_wireframe && (w0 < 0.01f || w1 < 0.01f || w2 < 0.01f)) {
+                    pixel_col.r = 1.0f;
+                    pixel_col.g = 1.0f;
+                    pixel_col.b = 1.0f;
+                } else {
+                    pixel_col.r = (w0 * c0.r + w1 * c1.r + w2 * c2.r) * z;
+                    pixel_col.g = (w0 * c0.g + w1 * c1.g + w2 * c2.g) * z;
+                    pixel_col.b = (w0 * c0.b + w1 * c1.b + w2 * c2.b) * z;
+                }
 
                 int i = y * screen_w + x;
                 if (z < pipeline->zbuffer[i]) {
                     pipeline->zbuffer[i] = z;
 
                     uint8_t r, g, b;
-                    gfx3d_color_to_rgb_u8(col, &r, &g, &b);
+                    gfx3d_color_to_rgb_u8(pixel_col, &r, &g, &b);
                     gfx3d_framebuffer_set_pixel(&pipeline->framebuffer, x, y, r, g, b);
                 }
             }

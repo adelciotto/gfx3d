@@ -105,8 +105,7 @@ void gfx3d_text_draw(const char *text, gfx3d_vec2_t pos, float scale) {
     float char_w = FONT_CHAR_W*scale;
     float char_h = FONT_CHAR_H*scale;
 
-    char *cp;
-    for (cp = (char *)text; *cp != '\0'; cp++) {
+    for (char *cp = (char *)text; *cp != '\0'; cp++) {
         if (*cp == '\n') {
             y += char_h*1.5f;
             x = pos.x;

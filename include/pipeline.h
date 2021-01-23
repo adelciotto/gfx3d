@@ -11,6 +11,7 @@ typedef struct gfx3d_pipeline_t {
     uint32_t viewport_h;
     gfx3d_framebuffer_t framebuffer;
     float *zbuffer;
+    bool draw_wireframe;
 } gfx3d_pipeline_t;
 
 bool gfx3d_pipeline_create(gfx3d_pipeline_t *pipeline, uint32_t viewport_w, uint32_t viewport_h);

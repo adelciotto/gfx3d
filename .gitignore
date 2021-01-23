@@ -1,4 +1,6 @@
 shdy_print.png
 .idea
 .gdb_history
+gfx3d.*
+*.autosave
 build

@@ -1,7 +1,6 @@
 # TODO
 
 - [ ] Add more types of common geometry.
-- [ ] Wire frame draw mode.
 - [ ] Draw debug lines.
 - [ ] Proper triangle clipping.
 - [ ] Better vertex buffer abstraction. Can pack all data into single array and define layout.
